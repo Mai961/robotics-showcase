@@ -1,0 +1,367 @@
+{
+  "configById": {
+    "Image!debug": {
+      "lichtblickPanelTitle": "Localizer debug image",
+      "imageMode": {
+        "imageTopic": "/odin_apriltag_localizer/debug_image/compressed",
+        "synchronize": false,
+        "rotation": 0,
+        "calibrationTopic": "/odin_apriltag_localizer/camera_info"
+      },
+      "cameraState": {
+        "distance": 20,
+        "perspective": true,
+        "phi": 60,
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "thetaOffset": 45,
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-pose",
+      "scene": {},
+      "transforms": {},
+      "topics": {},
+      "layers": {},
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      }
+    },
+    "3D!fixes": {
+      "lichtblickPanelTitle": "Fixes (top-down)",
+      "cameraState": {
+        "perspective": false,
+        "distance": 6.5,
+        "phi": 0,
+        "thetaOffset": 0,
+        "targetOffset": [
+          4.95,
+          2.8,
+          0
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.01,
+        "far": 5000
+      },
+      "followMode": "follow-none",
+      "followTf": "field",
+      "scene": {
+        "transforms": {
+          "showLabel": false,
+          "axisScale": 0.3,
+          "labelSize": 0.12
+        },
+        "backgroundColor": "#f4f4f5"
+      },
+      "transforms": {
+        "frame:base": {
+          "visible": false
+        },
+        "frame:field": {
+          "visible": false
+        },
+        "frame:odin_camera": {
+          "visible": false
+        },
+        "frame:odin_camera_measured": {
+          "visible": false
+        },
+        "frame:odom": {
+          "visible": false
+        },
+        "frame:arm_measured/ee": {
+          "visible": false
+        },
+        "frame:arm_measured/shoulder": {
+          "visible": false
+        },
+        "frame:arm_measured/wrist": {
+          "visible": false
+        },
+        "frame:arm_reference/ee": {
+          "visible": false
+        },
+        "frame:arm_reference/shoulder": {
+          "visible": false
+        },
+        "frame:arm_reference/wrist": {
+          "visible": false
+        }
+      },
+      "topics": {
+        "/viz/field": {
+          "visible": true
+        },
+        "/viz/field_base_path": {
+          "visible": false,
+          "type": "line",
+          "lineWidth": 0.04,
+          "gradient": [
+            "#7cc6ffff",
+            "#7cc6ffff"
+          ]
+        },
+        "/viz/path_so_far": {
+          "visible": true,
+          "type": "line",
+          "lineWidth": 0.04,
+          "gradient": [
+            "#4e98e2ff",
+            "#4e98e2ff"
+          ]
+        },
+        "/viz/fix_points": {
+          "visible": true,
+          "pointSize": 7,
+          "pointShape": "circle",
+          "colorMode": "flat",
+          "flatColor": "#ff8c00ff",
+          "decayTime": 2,
+          "colorField": "age_s"
+        },
+        "/odin_tree/field_base": {
+          "visible": true,
+          "type": "arrow",
+          "arrowScale": [
+            0.5,
+            0.12,
+            0.12
+          ],
+          "color": "#e8502fff"
+        },
+        "/odin_apriltag_localizer/pose": {
+          "visible": true,
+          "type": "axis",
+          "axisScale": 0.35,
+          "showCovariance": true,
+          "covarianceColor": "#36c24f66"
+        },
+        "/viz/tag_seen": {
+          "visible": true
+        },
+        "/odin_apriltag_localizer/tag_poses": {
+          "visible": true,
+          "type": "axis",
+          "axisScale": 0.2
+        }
+      },
+      "layers": {
+        "grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "grid",
+          "layerId": "foxglove.Grid",
+          "frameId": "field",
+          "size": 20,
+          "divisions": 20,
+          "lineWidth": 1,
+          "color": "#248eff40",
+          "position": [
+            8.27,
+            4.035,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "3D!scene": {
+      "lichtblickPanelTitle": "Field (3D)",
+      "cameraState": {
+        "perspective": true,
+        "distance": 16.5,
+        "phi": 65,
+        "thetaOffset": 46,
+        "targetOffset": [
+          6.5,
+          3.8,
+          0.0
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.05,
+        "far": 5000
+      },
+      "followMode": "follow-none",
+      "followTf": "field",
+      "scene": {
+        "transforms": {
+          "showLabel": false,
+          "axisScale": 0.3,
+          "labelSize": 0.12
+        },
+        "backgroundColor": "#f4f4f5"
+      },
+      "transforms": {
+        "frame:base": {
+          "visible": false
+        },
+        "frame:field": {
+          "visible": false
+        },
+        "frame:odin_camera": {
+          "visible": false
+        },
+        "frame:odin_camera_measured": {
+          "visible": false
+        },
+        "frame:odom": {
+          "visible": false
+        },
+        "frame:arm_measured/ee": {
+          "visible": false
+        },
+        "frame:arm_measured/shoulder": {
+          "visible": false
+        },
+        "frame:arm_measured/wrist": {
+          "visible": false
+        },
+        "frame:arm_reference/ee": {
+          "visible": false
+        },
+        "frame:arm_reference/shoulder": {
+          "visible": false
+        },
+        "frame:arm_reference/wrist": {
+          "visible": false
+        }
+      },
+      "topics": {
+        "/viz/field": {
+          "visible": true
+        },
+        "/viz/tag_seen": {
+          "visible": true
+        },
+        "/viz/robot_field": {
+          "visible": true
+        },
+        "/viz/odin_camera": {
+          "visible": true,
+          "type": "axis",
+          "axisScale": 0.3
+        },
+        "/viz/field_base_pose": {
+          "visible": true,
+          "type": "arrow",
+          "arrowScale": [
+            0.6,
+            0.15,
+            0.15
+          ],
+          "color": "#e8502fff"
+        }
+      },
+      "layers": {
+        "grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "grid",
+          "layerId": "foxglove.Grid",
+          "frameId": "field",
+          "size": 20,
+          "divisions": 20,
+          "lineWidth": 1,
+          "color": "#248eff40",
+          "position": [
+            8.27,
+            4.035,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "first": {
+      "first": "Image!debug",
+      "second": "3D!fixes",
+      "direction": "column",
+      "splitPercentage": 50
+    },
+    "second": "3D!scene",
+    "direction": "row",
+    "splitPercentage": 42
+  }
+}

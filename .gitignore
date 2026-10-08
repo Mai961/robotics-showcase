@@ -1,0 +1,14 @@
+build/
+install/
+log/
+__pycache__/
+*.pyc
+.pixi/
+.gradle/
+bin/
+*.o
+*.so
+*.class
+*.jar
+.idea/
+.vscode/
