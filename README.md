@@ -13,8 +13,8 @@ system is and what it produced.
 
 The algorithms themselves (solver, filter, control laws) are not published. The recordings below
 are the real system's inputs and outputs; the scripts compute the numbers in this README from those
-recordings alone. Interviewers can request access to the companion repository with the source
-excerpts and recompute checks.
+recordings alone. Full code, with the source excerpts and recompute checks, is available upon
+request.
 
 ## Architecture
 
