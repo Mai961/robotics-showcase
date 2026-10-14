@@ -1,0 +1,45 @@
+name: analyze
+
+on: [push, pull_request]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install the analysis requirements
+        run: pip install -r requirements.txt
+
+      - name: Run the analyses
+        run: |
+          set -euo pipefail
+          run() { echo "::group::$1"; python -I "$2" --out "/tmp/$1"; echo "::endgroup::"; }
+          run perception-sqpnp perception-sqpnp/replay/analyze_localizer.py
+          run state-estimation state-estimation/replay/analyze_field_ekf.py
+          run turret control/turret-2026/replay/analyze_turret.py
+          run udp-bridge udp-bridge/replay/analyze_clock.py
+
+      - name: Check the figures were written
+        run: |
+          set -euo pipefail
+          for f in /tmp/perception-sqpnp/pose_xy.png /tmp/perception-sqpnp/cov_trace_vs_ntags.png \
+                   /tmp/state-estimation/trajectory.png /tmp/state-estimation/innovation.png \
+                   /tmp/turret/tracking.png /tmp/udp-bridge/clock_sync.png; do
+            test -s "$f" || { echo "missing: $f"; exit 1; }
+            echo "ok: $f ($(stat -c %s "$f") bytes)"
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: analysis-figures
+          path: |
+            /tmp/perception-sqpnp/*.png
+            /tmp/state-estimation/*.png
+            /tmp/turret/*.png
+            /tmp/udp-bridge/*.png

@@ -1,0 +1,24 @@
+# Excerpt from talos_udp_bridge/config/talos_udp_bridge.yaml, the package default (the whole-body
+# control channels), with comments shortened. The SystemCore deployment's copy also forwards
+# /odin_tree/field_base and /odin_tree/seed_status, the localization output, on the same wire.
+#
+#   coproc -> RIO : /wholebody/references (JointState [q1,d,q3]) -> wire "wholebody/references" (double[])
+#                   /wholebody/status     (Float64MultiArray)    -> wire "wholebody/status"     (double[])
+#   RIO -> coproc : wire "wholebody/measured" (double[])         -> /wholebody/measured (JointState [q1,d,q3])
+#                   wire "wholebody/goal"     (String)           -> /wholebody/goal     (String)
+talos_udp_bridge:
+  ros__parameters:
+    rio_ip: "127.0.0.1"        # loopback for simulation; the robot's address is set per deployment
+    rio_port: 50661            # coproc -> RIO datagrams land here; the RIO binds it
+    coproc_port: 50662         # RIO -> coproc datagrams land here; the bridge binds it
+    wire_topic_root: ""        # wire name = ROS topic minus the leading slash
+    joint_names: [q1, d, q3]   # JointState <-> double[] mapped BY NAME into this fixed order
+
+    ros_to_udp_topics: [/wholebody/references, /wholebody/status]
+    ros_to_udp_rates:  [0.0, 0.0]          # 0.0 = forward at the source rate
+
+    udp_to_ros_wire: [wholebody/measured, wholebody/goal]
+    udp_to_ros_ros:  [/wholebody/measured, /wholebody/goal]
+    udp_to_ros_type: ["sensor_msgs/msg/JointState", "std_msgs/msg/String"]
+
+    clock_sync: true           # ping the RIO on "__sync" at 2 Hz; publish /talos_udp/clock at 1 Hz

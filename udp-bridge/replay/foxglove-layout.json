@@ -1,0 +1,80 @@
+{
+  "configById": {
+    "Plot!clock-offset": {
+      "paths": [
+        {
+          "value": "/talos_udp/clock.data[0]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "offset_s",
+          "showLine": false
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Clock offset (s)"
+    },
+    "Plot!clock-rtt": {
+      "paths": [
+        {
+          "value": "/talos_udp/clock.data[1]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "rtt_s",
+          "showLine": false
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Round trip (s)"
+    },
+    "Plot!clock-age": {
+      "paths": [
+        {
+          "value": "/talos_udp/clock.data[2]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "age_s",
+          "showLine": false
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Age of the estimate (s)"
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "direction": "column",
+    "first": "Plot!clock-offset",
+    "second": {
+      "direction": "column",
+      "first": "Plot!clock-rtt",
+      "second": "Plot!clock-age",
+      "splitPercentage": 50
+    },
+    "splitPercentage": 34
+  }
+}

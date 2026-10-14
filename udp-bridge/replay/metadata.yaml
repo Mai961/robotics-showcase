@@ -1,0 +1,44 @@
+rosbag2_bagfile_information:
+  version: 9
+  storage_identifier: mcap
+  duration:
+    nanoseconds: 153646032690
+  starting_time:
+    nanoseconds_since_epoch: 1788586937618414904
+  message_count: 308
+  topics_with_message_count:
+    - topic_metadata:
+        name: /talos_udp/clock
+        type: std_msgs/msg/Float64MultiArray
+        serialization_format: cdr
+        offered_qos_profiles:
+          - history: keep_last
+            depth: 10
+            reliability: reliable
+            durability: volatile
+            deadline:
+              sec: 9223372036
+              nsec: 854775807
+            lifespan:
+              sec: 9223372036
+              nsec: 854775807
+            liveliness: automatic
+            liveliness_lease_duration:
+              sec: 9223372036
+              nsec: 854775807
+            avoid_ros_namespace_conventions: false
+        type_description_hash: RIHS01_1025ddc6b9552d191f89ef1a8d2f60f3d373e28b283d8891ddcc974e8c55397f
+      message_count: 308
+  compression_format: ""
+  compression_mode: ""
+  relative_file_paths:
+    - clock-sync-154s.mcap
+  files:
+    - path: clock-sync-154s.mcap
+      starting_time:
+        nanoseconds_since_epoch: 1788586937618414904
+      duration:
+        nanoseconds: 153646032690
+      message_count: 308
+  custom_data: ~
+  ros_distro: jazzy

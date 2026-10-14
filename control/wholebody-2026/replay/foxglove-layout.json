@@ -1,0 +1,305 @@
+{
+  "configById": {
+    "Plot!q1": {
+      "lichtblickPanelTitle": "Shoulder q1 (rad)",
+      "paths": [
+        {
+          "value": "/wholebody/references.position[0]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "q1 reference",
+          "color": "#4e98e2",
+          "showLine": true,
+          "lineSize": 1.5
+        },
+        {
+          "value": "/wholebody/measured.position[0]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "q1 measured",
+          "color": "#f5774d",
+          "showLine": true,
+          "lineSize": 1.5
+        }
+      ],
+      "showLegend": true,
+      "legendDisplay": "left",
+      "showPlotValuesInLegend": false,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 165
+    },
+    "Plot!d": {
+      "lichtblickPanelTitle": "Telescope d (m)",
+      "paths": [
+        {
+          "value": "/wholebody/references.position[1]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "d reference",
+          "color": "#4e98e2",
+          "showLine": true,
+          "lineSize": 1.5
+        },
+        {
+          "value": "/wholebody/measured.position[1]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "d measured",
+          "color": "#f5774d",
+          "showLine": true,
+          "lineSize": 1.5
+        }
+      ],
+      "showLegend": true,
+      "legendDisplay": "left",
+      "showPlotValuesInLegend": false,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 165
+    },
+    "Plot!q3": {
+      "lichtblickPanelTitle": "Wrist q3 (rad)",
+      "paths": [
+        {
+          "value": "/wholebody/references.position[2]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "q3 reference",
+          "color": "#4e98e2",
+          "showLine": true,
+          "lineSize": 1.5
+        },
+        {
+          "value": "/wholebody/measured.position[2]",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "label": "q3 measured",
+          "color": "#f5774d",
+          "showLine": true,
+          "lineSize": 1.5
+        }
+      ],
+      "showLegend": true,
+      "legendDisplay": "left",
+      "showPlotValuesInLegend": false,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 165
+    },
+    "StateTransitions!phase": {
+      "lichtblickPanelTitle": "Phase (1 DRIVE, 2 APPROACH, 3 TASK, 4 RETRACT)",
+      "paths": [
+        {
+          "value": "/wholebody/status.data[0]",
+          "label": "phase",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "isSynced": true,
+      "showPoints": false
+    },
+    "3D!field": {
+      "lichtblickPanelTitle": "Whole body on the field",
+      "cameraState": {
+        "perspective": true,
+        "distance": 5.0,
+        "phi": 55,
+        "thetaOffset": 10,
+        "targetOffset": [
+          1.49,
+          4.22,
+          0.6
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.05,
+        "far": 5000
+      },
+      "followMode": "follow-none",
+      "followTf": "field",
+      "scene": {
+        "transforms": {
+          "showLabel": false,
+          "axisScale": 0.3,
+          "labelSize": 0.12
+        },
+        "backgroundColor": "#f4f4f5"
+      },
+      "transforms": {
+        "frame:arm_measured/ee": {
+          "visible": false
+        },
+        "frame:arm_measured/shoulder": {
+          "visible": false
+        },
+        "frame:arm_measured/wrist": {
+          "visible": false
+        },
+        "frame:arm_reference/ee": {
+          "visible": false
+        },
+        "frame:arm_reference/shoulder": {
+          "visible": false
+        },
+        "frame:arm_reference/wrist": {
+          "visible": false
+        },
+        "frame:base": {
+          "visible": false
+        },
+        "frame:field": {
+          "visible": false
+        },
+        "frame:odin_camera": {
+          "visible": false
+        },
+        "frame:odin_camera_measured": {
+          "visible": false
+        },
+        "frame:odom": {
+          "visible": false
+        }
+      },
+      "topics": {
+        "/viz/field": {
+          "visible": true
+        },
+        "/viz/robot_field": {
+          "visible": true
+        },
+        "/viz/arm": {
+          "visible": true
+        },
+        "/viz/field_base_path": {
+          "visible": true,
+          "type": "line",
+          "lineWidth": 0.04,
+          "gradient": [
+            "#4e98e2ff",
+            "#4e98e2ff"
+          ]
+        },
+        "/viz/field_base_pose": {
+          "visible": true,
+          "type": "arrow",
+          "arrowScale": [
+            0.6,
+            0.15,
+            0.15
+          ],
+          "color": "#e8502fff"
+        },
+        "/wholebody/base_ref": {
+          "visible": true,
+          "type": "axis",
+          "axisScale": 0.35
+        },
+        "/wholebody/goals_field": {
+          "visible": false,
+          "type": "arrow",
+          "arrowScale": [
+            0.3,
+            0.08,
+            0.08
+          ],
+          "gradient": [
+            "#ffd000ff",
+            "#ffd000ff"
+          ]
+        }
+      },
+      "layers": {
+        "grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "grid",
+          "layerId": "foxglove.Grid",
+          "frameId": "field",
+          "size": 20,
+          "divisions": 20,
+          "lineWidth": 1,
+          "color": "#248eff40",
+          "position": [
+            8.27,
+            4.035,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "RawMessages!events": {
+      "lichtblickPanelTitle": "Phase events",
+      "topicPath": "/wholebody/event",
+      "diffTopicPath": "",
+      "diffMethod": "custom",
+      "diffEnabled": false,
+      "showFullMessageForDiff": false
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "first": {
+      "first": {
+        "first": "Plot!q1",
+        "second": {
+          "first": "Plot!d",
+          "second": {
+            "first": "Plot!q3",
+            "second": "StateTransitions!phase",
+            "direction": "column",
+            "splitPercentage": 54
+          },
+          "direction": "column",
+          "splitPercentage": 35
+        },
+        "direction": "column",
+        "splitPercentage": 26
+      },
+      "second": "3D!field",
+      "direction": "row",
+      "splitPercentage": 42
+    },
+    "second": "RawMessages!events",
+    "direction": "column",
+    "splitPercentage": 82
+  }
+}
