@@ -185,11 +185,10 @@ contain is written as "not measured".
 ## Credits
 
 Each module's Credits section says who wrote what, based on `git log` of the private source
-repositories (for `control/chassis`, still to be confirmed by the author). Most of the work shown is
-mine. `sim-io-layer` and `control/turret-2026` were written with contributions from teammates.
-`perception-sqpnp` grew from a port by Zimeng Chai (`KeseterG`). `nt-bridge` is his work, included
-because it is the other half of the transport story, and the ROS side of `udp-bridge` reuses its
-topic machinery.
+repositories. Most of the work shown is mine. `sim-io-layer` and `control/turret-2026` were written
+with contributions from teammates. `perception-sqpnp` grew from a port by Zimeng Chai (`KeseterG`).
+`nt-bridge` is his work, included because it is the other half of the transport story, and the ROS
+side of `udp-bridge` reuses its topic machinery.
 
 Parts of this code were written with AI coding assistants under the author's direction.
 

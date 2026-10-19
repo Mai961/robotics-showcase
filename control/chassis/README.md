@@ -137,4 +137,4 @@ driver-station capture; not the full capture).
 
 ## Credits
 
-Credits: to be confirmed by the author.
+Written by Zile Liao.
