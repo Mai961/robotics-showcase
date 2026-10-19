@@ -106,59 +106,69 @@ the turret's loops; gains reach the robot side through `nt-bridge`.
 | [state-estimation](state-estimation/) | EKF over the robot's field pose (VIO predict, tag update); robot-side fusion with wheel odometry | recording + viewer + measured numbers | **[▶ Open in viewer](https://replay-viewer-e62.pages.dev/?ds=remote-file&ds.url=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fmatch%2Fmatch-20s.mcap&layoutUrl=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fmatch%2Ffoxglove-layout.json)** |
 | [udp-bridge](udp-bridge/) | Typed UDP publish/subscribe between the Java robot program (via JNI) and ROS 2, with clock sync | recording + viewer + measured numbers | **[▶ Open in viewer](https://replay-viewer-e62.pages.dev/?ds=remote-file&ds.url=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fudp-bridge%2Fclock-sync-154s.mcap&layoutUrl=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fudp-bridge%2Ffoxglove-layout.json)** |
 | [nt-bridge](nt-bridge/) | NetworkTables 4 ↔ ROS 2 mirror for dashboards and tools (by Zimeng Chai) | infrastructure excerpt | — |
-| [sim-io-layer](sim-io-layer/) | One motor interface with a real (TalonFX) and a simulated implementation | infrastructure excerpt | — |
+| [sim-io-layer](sim-io-layer/) | One IO interface with two backends, TalonFX and a kinematic simulation; the whole-body controller run unchanged against the simulated robot | recording + viewer + measured numbers | **[▶ Open in viewer](https://replay-viewer-e62.pages.dev/?ds=remote-file&ds.url=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fsim-wholebody%2Fsim-cycle.mcap&layoutUrl=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fsim-wholebody%2Ffoxglove-layout.json)** |
+| [control/chassis](control/chassis/) | Swerve drive and autonomous path following: the base the turret and the whole-body controller sit on | log + measured numbers | — (CSV) |
 | [control/turret-2026](control/turret-2026/) | Turret aiming cascade and shoot-on-the-move compensation | recording + measured numbers | — (CSV) |
 | [control/wholebody-2026](control/wholebody-2026/) | Whole-body control: phase state machine and Placo QP on the coprocessor, joint targets executed by the robot | recording + viewer | **[▶ Open in viewer](https://replay-viewer-e62.pages.dev/?ds=remote-file&ds.url=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fwholebody-shop%2Fwholebody-cycle-shop.mcap&layoutUrl=https%3A%2F%2Fpub-0f92a4b175d3420290d73d6c2242fb57.r2.dev%2Fwholebody-shop%2Ffoxglove-layout.json)** |
-| [llm-tuning-agent](llm-tuning-agent/) | PID tuning bench steered by a coding agent, inside hard limits | clip only (website) | — |
+| [llm-tuning-agent](llm-tuning-agent/) | PID tuning bench steered by a coding agent, inside hard limits | log + measured numbers | — (CSV) |
 
 Clips of each project running: https://mai961.github.io/
 
 ## Recordings
 
-Five modules come with a short recording of the real system. `state-estimation`,
-`control/wholebody-2026` and `udp-bridge` each have a `replay/` folder holding an MCAP file and its
-`metadata.yaml`, which `ros2 bag play` and Foxglove Studio open. `perception-sqpnp` shares the one
-match recording, `state-estimation/replay/match-20s.mcap`, which carries the localizer's outputs as
-well as the EKF's, so both modules open in the same viewer. `control/turret-2026` has a CSV
-converted from the robot program's log. Each file was cut from a
-recorded bag or log to one window of 6 to 30 s (the whole 154 s for the clock topic), keeping only
-the topics that module reads or produces, and renamed; no full bag is included. Camera images are
-blurred except for the AprilTags and the localizer's overlay. Each module's README names the source
-recording and window, lists the topics, and shows how to open the file, including a few lines of
-Python that need no ROS install. Each MCAP recording also opens in the browser, with its layout, in
-a hosted viewer at https://replay-viewer-e62.pages.dev/ (Lichtblick, an open-source build of
-Foxglove Studio; no sign-in); the table above links each one. `nt-bridge`, `sim-io-layer` and
-`llm-tuning-agent` have no recording.
+Eight modules come with a recording. `state-estimation`, `control/wholebody-2026` and `udp-bridge`
+each have a `replay/` folder holding an MCAP file of the real system and its `metadata.yaml`, which
+`ros2 bag play` and Foxglove Studio open. `perception-sqpnp` shares the one match recording,
+`state-estimation/replay/match-20s.mcap`, which carries the localizer's outputs as well as the
+EKF's, so both modules open in the same viewer. `sim-io-layer` has an MCAP file of the whole-body
+controller running against the simulated robot. `control/turret-2026` and `control/chassis` have
+CSVs converted from driver-station captures of the values the robot program published.
+`llm-tuning-agent` has a CSV of the measured outcome of each episode of one bench tuning session,
+converted from the tuner's log with the gains and limits removed. Each file was cut from a recorded
+bag or log to one window of 6 to 30 s (the whole 154 s for the clock topic, the whole session for
+the tuning log), keeping only the topics that module reads or produces, and renamed; no full bag is
+included. Camera images are blurred except for the AprilTags and the localizer's overlay. Each
+module's README names the source recording and window, lists the topics, and shows how to open the
+file, including a few lines of Python that need no ROS install. Each MCAP recording also opens in
+the browser, with its layout, in a hosted viewer at https://replay-viewer-e62.pages.dev/
+(Lichtblick, an open-source build of Foxglove Studio; no sign-in); the table above links each one.
+`nt-bridge` has no recording.
 
 Recordings © Zile Liao: they may be viewed and analysed, not redistributed. The scripts, layouts
 and documentation are MIT-licensed (see License below).
 
 ## Run the analyses
 
-Four modules have a script in `replay/` that reads the module's recording and reports what can be
+Seven modules have a script in `replay/` that reads the module's recording and reports what can be
 read off it. The scripts only read what the system logged: no solver, no filter, no control law.
-They need Python 3 with the three packages in `requirements.txt` (the turret's needs only numpy and
-matplotlib); no ROS install. From the repository root:
+They need Python 3 with the three packages in `requirements.txt` (the turret's, the chassis's and
+the tuning bench's need only numpy and matplotlib); no ROS install. From the repository root:
 
 ```sh
 pip install -r requirements.txt
 python perception-sqpnp/replay/analyze_localizer.py      # 0.8 s
 python state-estimation/replay/analyze_field_ekf.py      # 2.0 s
-python control/turret-2026/replay/analyze_turret.py      # 0.5 s
+python control/turret-2026/replay/analyze_turret.py      # 0.6 s
+python control/chassis/replay/analyze_chassis.py         # 0.5 s
 python udp-bridge/replay/analyze_clock.py                # 0.6 s
+python sim-io-layer/replay/analyze_sim_vs_real.py        # 0.6 s
+python llm-tuning-agent/replay/analyze_tuning.py         # 0.5 s
 ```
 
 Each prints its summary, the output its module's README quotes and explains, and writes its figures
 to `<module>/replay/replay_out/`, next to the script (`--out <dir>` picks another, `--help` lists
-the options). [`.github/workflows/analyze.yml`](.github/workflows/analyze.yml) runs all four on
+the options). [`.github/workflows/analyze.yml`](.github/workflows/analyze.yml) runs all seven on
 every push and pull request; the badge at the top shows its latest result.
 
 | Module | What the analysis reads | Number |
 |---|---|---|
 | [perception-sqpnp](perception-sqpnp/#analysis) | `~/detections` records, `~/pose` with its covariance, the logged reprojection error | 110 of 183 frames solved as one pooled target; chosen-tag reprojection error median 0.035 px, as logged |
 | [state-estimation](state-estimation/#analysis) | The EKF's pose, the tag fixes and their covariance, the node's logged per-fix values | 130 updates in 20 s on 400 Hz VIO; logged innovation median 1.0 cm |
-| [control/turret-2026](control/turret-2026/#analysis) | The CSV's logged target and measured turret angle | tracking RMS 0.90° in TRACK |
+| [control/turret-2026](control/turret-2026/#analysis) | The CSV's logged turret angles, compensation switch, compensation angle and lateral speed | compensation on for 16.65 s while moving; lateral speed −1.971 to +1.855 m/s, compensation angle −39.9° to +33.6°; tracking RMS 5.17° while compensating |
+| [control/chassis](control/chassis/#analysis) | The path follower's target and measured pose, the commanded and measured chassis velocity | position error RMS 0.227 m, max 0.482 m, over 6.16 s of path following; speed error RMS 0.439 m/s; up to 3.91 m/s |
 | [udp-bridge](udp-bridge/#analysis) | The logged clock-sync estimate | offset 2.845 s → 2.827 s over 154 s, round trip median 0.34 ms |
+| [sim-io-layer](sim-io-layer/#analysis) | The measured and reference joints and phase events of the simulated and the real whole-body cycle | sim − real RMS in TASK q1 0.056 rad, d 0.017 m, q3 0.041 rad; latch → DRIVE 2.355 s against 2.380 s |
+| [llm-tuning-agent](llm-tuning-agent/#analysis) | Each episode's logged outcome in one bench session | 32 experiments, 0 aborted; settle time 1.04 → 0.76 s, settling error 0.109 → 0.0071 rad, overshoot 0.0122 → 0.0185 rad |
 
 ## How to read this repo
 
@@ -168,17 +178,18 @@ why the design was chosen, in one paragraph; it is not a recipe. "Replay" descri
 how to open it in the viewer, and the analysis of it. The Status line says what the module holds:
 "recording + viewer + measured numbers" for a module with an MCAP recording and an analysis script,
 "recording + measured numbers" for the turret's CSV, "recording + viewer" for the whole-body
-recording, "infrastructure excerpt" for the simplified source of the bridges and the motor layer,
-and "clip only (website)" for the tuning agent. Any number the recordings do not contain is written
-as "not measured".
+recording, "log + measured numbers" for the chassis's and the tuning bench's logs, and
+"infrastructure excerpt" for the simplified source of `nt-bridge`. Any number the recordings do not
+contain is written as "not measured".
 
 ## Credits
 
 Each module's Credits section says who wrote what, based on `git log` of the private source
-repositories. Most of the work shown is mine. `sim-io-layer` and `control/turret-2026` were written
-with contributions from teammates. `perception-sqpnp` grew from a port by Zimeng Chai
-(`KeseterG`). `nt-bridge` is his work, included because it is the other half of the transport
-story, and the ROS side of `udp-bridge` reuses its topic machinery.
+repositories (for `control/chassis`, still to be confirmed by the author). Most of the work shown is
+mine. `sim-io-layer` and `control/turret-2026` were written with contributions from teammates.
+`perception-sqpnp` grew from a port by Zimeng Chai (`KeseterG`). `nt-bridge` is his work, included
+because it is the other half of the transport story, and the ROS side of `udp-bridge` reuses its
+topic machinery.
 
 Parts of this code were written with AI coding assistants under the author's direction.
 

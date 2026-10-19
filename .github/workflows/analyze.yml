@@ -23,14 +23,20 @@ jobs:
           run perception-sqpnp perception-sqpnp/replay/analyze_localizer.py
           run state-estimation state-estimation/replay/analyze_field_ekf.py
           run turret control/turret-2026/replay/analyze_turret.py
+          run chassis control/chassis/replay/analyze_chassis.py
           run udp-bridge udp-bridge/replay/analyze_clock.py
+          run sim-io-layer sim-io-layer/replay/analyze_sim_vs_real.py
+          run tuning llm-tuning-agent/replay/analyze_tuning.py
 
       - name: Check the figures were written
         run: |
           set -euo pipefail
           for f in /tmp/perception-sqpnp/pose_xy.png /tmp/perception-sqpnp/cov_trace_vs_ntags.png \
                    /tmp/state-estimation/trajectory.png /tmp/state-estimation/innovation.png \
-                   /tmp/turret/tracking.png /tmp/udp-bridge/clock_sync.png; do
+                   /tmp/turret/tracking.png /tmp/turret/compensation_vs_lateral_speed.png \
+                   /tmp/chassis/path.png /tmp/chassis/velocity.png \
+                   /tmp/udp-bridge/clock_sync.png /tmp/sim-io-layer/sim_vs_real.png \
+                   /tmp/tuning/episodes.png; do
             test -s "$f" || { echo "missing: $f"; exit 1; }
             echo "ok: $f ($(stat -c %s "$f") bytes)"
           done
@@ -42,4 +48,7 @@ jobs:
             /tmp/perception-sqpnp/*.png
             /tmp/state-estimation/*.png
             /tmp/turret/*.png
+            /tmp/chassis/*.png
             /tmp/udp-bridge/*.png
+            /tmp/sim-io-layer/*.png
+            /tmp/tuning/*.png
