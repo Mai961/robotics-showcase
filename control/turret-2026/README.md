@@ -1,6 +1,7 @@
 # control/turret-2026: turret aiming cascade and shoot-on-the-move compensation
 
-Shown in motion on my project site: https://mai961.github.io/#shoot-on-the-move
+Shown in motion on my project site: https://mai961.github.io/#shoot-on-the-move (that clip and
+the recording below are from different runs).
 
 ## What it does
 
@@ -44,85 +45,88 @@ and they were tuned on a bench and from logs of recorded driving sessions.
 
 ## Replay
 
-The shot compensation was off in this clip: the turret held a fixed field heading, not the shot
-solution, so the clip shows the aiming cascade and not the compensation.
-`replay/turret-tracking-30s.csv` holds 30 s of the turret tracking that heading while the robot
-drives at up to 3 m/s. It was converted from the robot program's recorded log `run_14.wpilog` (an
-AdvantageKit log), 11.5 s to 41.5 s after the log's start, and renamed: 1,045 rows, 0.14 MB. There
-is one row per robot loop in which the turret logged its loop time. AdvantageKit records a value
-only when it changes, so each column holds its latest logged value at that row's time. Values are
-rounded to 2 to 5 decimals.
+`replay/turret-shoot-30s.csv` holds 30 s of the turret tracking its target while the robot drives
+at up to 3.5 m/s and the driver switches the shot compensation on and off. It is not from the same
+run as the clip on the project site: no recorded log covers that clip. The source is
+`run_8.wpilog`, a driver-station capture of the values the robot program published over
+NetworkTables (its AdvantageKit outputs), recorded on 2026-07-18. The window is 1.80 s to 31.84 s
+after the capture's start, converted and renamed: 1,010 rows, 73 KB. There is one row per robot
+loop, one for each robot timestamp in the capture. The capture records a value only when it
+changes, so each column holds its latest value at that row's time; the values that had not
+changed since the previous capture file (the turret mode, and the compensation switch, off) are
+carried over from that file. Values are written with 3 decimals.
 
 | Columns | Unit | Logged as |
 |---|---|---|
 | `time_s` | s | Time since the window start |
-| `loop_dt_ms` | ms | The turret's measured loop period |
-| `turret_mode` | | `SEEKING` or `TRACKING`; TRACKING throughout this window |
+| `turret_mode` | | `SEEKING` or `TRACKING` |
 | `target_angle_robot_deg`, `measured_angle_robot_deg` | deg | The turret's target and measured angle, robot frame |
 | `aim_error_abs_deg` | deg | The absolute aim error |
-| `velocity_setpoint_dps`, `measured_velocity_dps` | deg/s | The outer loop's velocity command to the TalonFX, and the measured velocity |
-| `spring_comp_volts` | V | The spring feedforward voltage |
-| `motor_position_rot`, `motor_velocity_rot_per_s`, `motor_output_volts`, `motor_supply_volts`, `motor_stator_current_a` | rot, rot/s, V, V, A | The turret motor's `MotorInputs` (see `sim-io-layer`): `positionRot`, `velocityRotPerSecond`, `motorVolts`, `appliedVolts` (filled with the supply voltage on the TalonFX) and `currentStatorAmps` |
-| `chassis_vx_mps`, `chassis_vy_mps`, `chassis_omega_radps` | m/s, rad/s | Chassis velocity from the swerve modules, robot frame |
-| `shot_turret_angle_world_cmd_deg` | deg | The shot solution's turret angle, field frame; computed every loop but not followed in this clip |
-| `shot_distance_m` | m | Distance from the shot point to the target |
-
-In this clip the turret's target was its default one, the field heading 0°. In the full log, the
-robot-frame target is that heading turned into the robot frame, and the shot compensation stays
-switched off until after the clip ends (checked against the full log while preparing this
-repository; not reproducible here). The clip shows the cascade holding a fixed field heading while
-the chassis drives and turns under it.
+| `chassis_vx_mps`, `chassis_vy_mps`, `chassis_omega_radps` | m/s, rad/s | Measured chassis velocity from the swerve modules, robot frame |
+| `compensation_enabled` | 0/1 | Whether the shot compensation was on |
+| `compensation_angle_deg` | deg | The compensation angle the shot solution applied; logged only while the compensation is on, empty otherwise |
+| `lateral_speed_mps` | m/s | The robot's speed across the line to the target, as the shot solution logged it; only while the compensation is on, empty otherwise |
+| `compensation_saturated` | 0/1 | The shot solution's flag for a compensation at its limit |
+| `shooting` | 0/1 | The drive's shooting flag |
 
 Open it in any spreadsheet or plotting tool; plot `target_angle_robot_deg` and
-`measured_angle_robot_deg` against `time_s`. It has no hosted viewer link: the viewer opens MCAP
-files, and this is a CSV.
+`measured_angle_robot_deg` against `time_s`, or `compensation_angle_deg` against
+`lateral_speed_mps`. It has no hosted viewer link: the viewer opens MCAP files, and this is a CSV.
 
-What to look for: the robot drives at up to 3.0 m/s and turns at up to 4.4 rad/s, and the target
-angle swings by up to 72° within one second. While the robot moves faster than 0.5 m/s (54% of the
-rows), the median aim error is 0.26°, and 90% of those rows are under 0.91°. The loop period shows
-what the code comments describe: the robot loop ran slower than its nominal 20 ms (median 26 ms
-here, up to 109 ms).
+What to look for: across lateral speeds from −1.971 to +1.855 m/s, the logged compensation angle
+ranged from −39.9° to +33.6°. The compensation was on in 6 periods, 17.0 s in all, 16.65 s of it
+while the turret was tracking and the robot moved faster than 0.5 m/s. Every tracking error above
+10° falls within 0.3 s after the compensation was switched on or off, when the target steps by the
+compensation angle. From 24.55 s to 25.29 s the turret is in `SEEKING`: the robot-frame target
+jumps from −194° to +160°, and the turret swings across, from −200° to +110°.
 
 Read it with Python's standard library, from the repository root:
 
 ```python
-import csv, statistics
+import csv
 
-rows = list(csv.DictReader(open("control/turret-2026/replay/turret-tracking-30s.csv")))
-moving = [r for r in rows
-          if (float(r["chassis_vx_mps"]) ** 2 + float(r["chassis_vy_mps"]) ** 2) ** 0.5 > 0.5]
-err = statistics.median(float(r["aim_error_abs_deg"]) for r in moving)
-print(f"{len(rows)} rows, {len(moving)} while moving; median aim error {err:.2f} deg")
+rows = list(csv.DictReader(open("control/turret-2026/replay/turret-shoot-30s.csv")))
+on = [r for r in rows if r["compensation_enabled"] == "1"]
+lat = [float(r["lateral_speed_mps"]) for r in on]
+ang = [float(r["compensation_angle_deg"]) for r in on]
+print(f"{len(rows)} rows, {len(on)} with compensation on: "
+      f"lateral speed {min(lat):+.2f} to {max(lat):+.2f} m/s, "
+      f"compensation angle {min(ang):+.1f} to {max(ang):+.1f} deg")
 ```
 
 ### Analysis
 
 `replay/analyze_turret.py` reads the CSV's logged columns and nothing else: target and measured
-angle, mode, logged aim error, loop period and chassis velocity. It runs no control law. It needs
-only numpy and matplotlib. From the repository root:
+angle, mode, measured chassis velocity, the compensation switch, and the compensation angle,
+lateral speed and saturation flag the robot logged. It runs no control law and no shot solution.
+It needs only numpy and matplotlib. From the repository root:
 
 ```sh
 pip install -r requirements.txt     # numpy, matplotlib (mcap-ros2-support is not needed here)
 python control/turret-2026/replay/analyze_turret.py     # --log <csv>, --out <dir>, --help
 ```
 
-Output (0.5 s):
+Output (0.6 s):
 
 ```
-clip: turret-tracking-30s.csv   1045 rows over 29.9 s (TRACKING 1045)
-chassis up to 3.0 m/s and 4.4 rad/s; robot-frame target swings up to 72 deg within 1 s
-loop period median 26 ms, max 109 ms
-tracking error in TRACK (target - measured, 1045 rows): RMS 0.90 deg, median |e| 0.18 deg, 90 % under 0.78 deg, max 10.08 deg
-logged aim error above 0.5 m/s (568 rows, 54 %): median 0.26 deg, 90 % under 0.91 deg
-shot compensation: compensation was off in this clip; no logged compensation values, so no compensation plot
+clip: turret-shoot-30s.csv   1010 rows over 30.0 s (SEEKING 24, TRACKING 986)
+chassis up to 3.52 m/s (measured), above 0.5 m/s on 94 % of the rows
+shot compensation on in 6 periods, 17.04 s in all; on while TRACKING above 0.5 m/s: 16.65 s (550 rows)
+  over those rows: lateral speed -1.971 to +1.855 m/s, compensation angle -39.93 to +33.59 deg (both as logged)
+  compensation logged as saturated from 8.45 s to 8.67 s (9 rows)
+tracking error (target - measured): RMS 5.17 deg while compensating (550 rows), RMS 4.23 deg over all TRACKING rows (986)
 wrote control/turret-2026/replay/replay_out/tracking.png
+wrote control/turret-2026/replay/replay_out/compensation_vs_lateral_speed.png
 ```
 
-The tracking error stays under 0.8° on 90 % of the rows. Every error above 2.5° falls in the first
-second or in the fastest swings of the robot-frame target, near 5.8 s and from 8.3 s to 9.2 s, when
-the target moves by tens of degrees in under a second; the largest, 10°, is at 8.5 s.
+"While compensating" means the rows with the compensation on, the turret in `TRACKING` and the
+robot faster than 0.5 m/s. The tracking error there is larger than over all `TRACKING` rows: the
+largest errors follow the compensation being switched on, when the target steps by the
+compensation angle. The plot below shows the steps, with the compensation periods shaded.
 
-![Turret target against measurement, the tracking error, and the mode over the clip](replay/replay_out/tracking.png)
+![Turret target against measurement, the tracking error, and the mode over the clip, with the compensation periods shaded](replay/replay_out/tracking.png)
+
+![The logged compensation angle against the logged lateral speed, rows with the compensation on, saturated rows marked](replay/replay_out/compensation_vs_lateral_speed.png)
 
 Recordings © Zile Liao: they may be viewed and analysed, not redistributed. The scripts and text
 are MIT-licensed with the rest of the repository.
@@ -131,11 +135,10 @@ are MIT-licensed with the rest of the repository.
 
 **Status: recording + measured numbers.** The controller's and the shot solution's source are not
 in this repository. The numbers above are read from the recording by `replay/analyze_turret.py`.
-Latency, hit rate at the target and aim at the target were not measured: in the clip the turret
-held a fixed field heading.
+Latency and hit rate at the target were not measured.
 
-Replay data: `replay/turret-tracking-30s.csv` (converted from a recorded robot log; not the full
-log).
+Replay data: `replay/turret-shoot-30s.csv` (converted from a driver-station capture of the values
+the robot published; not the full capture).
 
 ## Credits
 
