@@ -20,6 +20,6 @@ public interface MotorIO {
     /** Closed-loop position along a motion profile that runs on the motor controller. */
     default void setMotionMagicSetpoint(Angle position) {}
 
-    /** Change the controller gains (kP, kI, kD, kS, kV, kA) at runtime. */
+    /** Change the motor controller's closed-loop gains at runtime. */
     default void updateGains(Slot0Configs slot0) {}
 }
