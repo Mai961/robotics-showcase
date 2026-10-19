@@ -27,9 +27,9 @@ DEFAULT_OUT = os.path.join(HERE, "replay_out")
 FIG_DPI = 150
 TEXT_COLUMNS = ("phase", "gain_set")
 METRICS = (("settle_time_s", "settle time", "s", 2),
-           ("settling_error_rev", "settling error", "rev", 4),
-           ("overshoot_rev", "overshoot", "rev", 4),
-           ("rising_error_rev", "rising error", "rev", 3))
+           ("settling_error_rad", "settling error", "rad", 4),
+           ("overshoot_rad", "overshoot", "rad", 4),
+           ("rising_error_rad", "rising error", "rad", 3))
 PHASES = (("search", "search"), ("speed", "speed step"), ("verify", "verify"))
 
 

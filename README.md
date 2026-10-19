@@ -168,7 +168,7 @@ every push and pull request; the badge at the top shows its latest result.
 | [control/chassis](control/chassis/#analysis) | The path follower's target and measured pose, the commanded and measured chassis velocity | position error RMS 0.227 m, max 0.482 m, over 6.16 s of path following; speed error RMS 0.439 m/s; up to 3.91 m/s |
 | [udp-bridge](udp-bridge/#analysis) | The logged clock-sync estimate | offset 2.845 s → 2.827 s over 154 s, round trip median 0.34 ms |
 | [sim-io-layer](sim-io-layer/#analysis) | The measured and reference joints and phase events of the simulated and the real whole-body cycle | sim − real RMS in TASK q1 0.056 rad, d 0.017 m, q3 0.041 rad; latch → DRIVE 2.355 s against 2.380 s |
-| [llm-tuning-agent](llm-tuning-agent/#analysis) | Each episode's logged outcome in one bench session | 32 experiments, 0 aborted; settle time 1.04 → 0.76 s, settling error 0.109 → 0.0071 rev, overshoot 0.0122 → 0.0185 rev |
+| [llm-tuning-agent](llm-tuning-agent/#analysis) | Each episode's logged outcome in one bench session | 32 experiments, 0 aborted; settle time 1.04 → 0.76 s, settling error 0.109 → 0.0071 rad, overshoot 0.0122 → 0.0185 rad |
 
 ## How to read this repo
 

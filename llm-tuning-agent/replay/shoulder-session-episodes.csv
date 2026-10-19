@@ -1,4 +1,4 @@
-episode,phase,sweep,gain_set,aborted,overshoot_rev,settle_time_s,settling_error_rev,rising_error_rev
+episode,phase,sweep,gain_set,aborted,overshoot_rad,settle_time_s,settling_error_rad,rising_error_rad
 1,search,1,seed,0,0.0122,1.04,0.1090,0.3783
 2,search,1,,0,0.0029,0.74,0.1074,0.3200
 3,search,1,,0,0.0045,0.77,0.0735,0.2547
